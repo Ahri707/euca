@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import CheckBox from "@react-native-community/checkbox";
+import CheckBox from "expo-checkbox";
 import React, { useState } from "react";
 import {
   Text,
@@ -56,7 +56,8 @@ const LoginScreen: React.FC = () => {
           <CheckBox
             value={remember}
             onValueChange={setRemember}
-            tintColors={{ true: "#b3ff33", false: "#aaa" }}
+            // expo-checkbox uses `color` for the checked color on Android/iOS
+            color={remember ? "#b3ff33" : "#aaa"}
           />
           <Text style={styles.checkboxText}>Lembre-se de mim</Text>
         </View>
