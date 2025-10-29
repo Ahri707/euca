@@ -24,7 +24,7 @@ const LoginScreen: React.FC = () => {
       {/* Campo Email */}
       <TextInput
         style={styles.input}
-        placeholder="Username, Email or Phone Number"
+        placeholder="Email"
         placeholderTextColor="#aaa"
         value={email}
         onChangeText={setEmail}
@@ -35,7 +35,7 @@ const LoginScreen: React.FC = () => {
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
-          placeholder="Password"
+          placeholder="Digite sua senha"
           placeholderTextColor="#aaa"
           secureTextEntry={!showPassword}
           value={password}
