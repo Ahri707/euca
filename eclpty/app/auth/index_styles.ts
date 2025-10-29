@@ -83,6 +83,12 @@ const styles = StyleSheet.create({
     color: "#b3ff33",
     fontWeight: "bold",
   },
+  errorText: {
+    color: "#ff4d4d",
+    width: "100%",
+    marginTop: -8,
+    marginBottom: 10,
+  },
 });
 
 export default styles;

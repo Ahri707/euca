@@ -1,33 +1,50 @@
 import { Ionicons } from "@expo/vector-icons";
 import CheckBox from "expo-checkbox";
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "./index_styles";
 
-// esconde a header da tela de login (que por algum motibo ficou mostrando)
-export const options = { headerShown: false };
-
 const LoginScreen: React.FC = () => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [remember, setRemember] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
+  const [submitAttempted, setSubmitAttempted] = useState<boolean>(false);
+
+  const validateEmail = (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Olá!</Text>
       <Text style={styles.subtitle}>Bem vindo</Text>
-      <Text style={styles.waitingText}>Estavamos esperando por voce ;) !</Text>
+      <Text style={styles.waitingText}>Estavamos esperando por você! ;)</Text>
 
       {/* Campo Email */}
       <TextInput
         style={styles.input}
-        placeholder="E-mail"
+        placeholder="Digite seu  E-mail"
         placeholderTextColor="#aaa"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => {
+          // atualiza o valor; se já tentou submeter, revalida para limpar o erro quando o usuario corrigir
+          setEmail(text);
+          if (submitAttempted) {
+            if (validateEmail(text)) setEmailError("");
+          }
+        }}
         autoCapitalize="none"
+        keyboardType="email-address"
       />
+
+      {submitAttempted && emailError.length > 0 && (
+        <Text style={styles.errorText}>{emailError}</Text>
+      )}
 
       {/* Campo Senha */}
       <View style={styles.passwordContainer}>
@@ -48,7 +65,7 @@ const LoginScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Lembre-se e Esqueceu */}
+      {/* Caixinha pra lembrar do login do usuario */}
       <View style={styles.row}>
         <View style={styles.checkboxRow}>
           <CheckBox
@@ -64,15 +81,34 @@ const LoginScreen: React.FC = () => {
       </View>
 
       {/* Botão Entrar */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.8}
+        onPress={() => {
+          setSubmitAttempted(true);
+          if (!validateEmail(email)) {
+            setEmailError("Informe um endereço de E-mail válido");
+            return;
+          }
+          setEmailError("");
+          // prosseguir com o fluxo de login (substitua por sua lógica)
+          Alert.alert("Entrando", "Tentando efetuar login...");
+        }}
+      >
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
       {/* Criar conta */}
-      <Text style={styles.footerText}>
-        Ainda não tem uma conta?{" "}
-        <Text style={styles.createText}>Crie uma</Text>
-      </Text>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={styles.footerText}>Ainda não tem uma conta? </Text>
+        <TouchableOpacity
+          onPress={() => router.push('/auth/register')}
+          accessibilityRole="button"
+          activeOpacity={0.7}
+        >
+          <Text style={styles.createText}>Crie uma</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
