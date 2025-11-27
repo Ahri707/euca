@@ -75,7 +75,11 @@ const LoginScreen: React.FC = () => {
           />
           <Text style={styles.checkboxText}>Lembre-se de mim</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push('/auth/retriv_pswrd')}
+          accessibilityRole="button"
+          activeOpacity={0.7}
+        >
           <Text style={styles.forgotText}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
@@ -90,9 +94,13 @@ const LoginScreen: React.FC = () => {
             setEmailError("Informe um endereço de E-mail válido");
             return;
           }
+          if (!password || password.trim().length === 0) {
+            Alert.alert("Senha inválida", "Informe sua senha");
+            return;
+          }
           setEmailError("");
-          // prosseguir com o fluxo de login (substitua por sua lógica)
-          Alert.alert("Entrando", "Tentando efetuar login...");
+          // aqui você pode chamar sua API de login; por enquanto, navega ao dashboard
+          router.push('/home/dashboard');
         }}
       >
         <Text style={styles.buttonText}>Entrar</Text>

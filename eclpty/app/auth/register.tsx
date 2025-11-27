@@ -23,7 +23,7 @@ export default function RegisterScreen() {
       setNameError('O nome deve ter pelo menos 4 caracteres');
       return;
     }
-    // defensivo: garantir que não ha digitos ou símbolos
+    // defensivo: garantir que não tem digitos ou símbolos indevidos
         if (/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/.test(name)) {
       setNameError('Nome contém caracteres inválidos');
       return;
